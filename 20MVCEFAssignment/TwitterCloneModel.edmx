@@ -1,0 +1,241 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FSEAssignmentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Following">
+          <Key>
+            <PropertyRef Name="FollowingId" />
+          </Key>
+          <Property Name="FollowingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Id" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Following_Id" Type="varchar" MaxLength="25" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Joined" Type="datetime" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tweet">
+          <Key>
+            <PropertyRef Name="Tweet_Id" />
+          </Key>
+          <Property Name="Tweet_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="User_Id" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Message" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Following_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Following" Type="Self.Following" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Following">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Following_Person1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Following" Type="Self.Following" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Following">
+              <PropertyRef Name="Following_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tweet_Tweet">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Tweet" Type="Self.Tweet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Tweet">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FSEAssignmentModelStoreContainer">
+          <EntitySet Name="Following" EntityType="Self.Following" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person" EntityType="Self.Person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tweet" EntityType="Self.Tweet" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Following_Person" Association="Self.FK_Following_Person">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Following" EntitySet="Following" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Following_Person1" Association="Self.FK_Following_Person1">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Following" EntitySet="Following" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tweet_Tweet" Association="Self.FK_Tweet_Tweet">
+            <End Role="Person" EntitySet="Person" />
+            <End Role="Tweet" EntitySet="Tweet" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FSEAssignmentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Following">
+          <Key>
+            <PropertyRef Name="FollowingId" />
+          </Key>
+          <Property Name="FollowingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Id" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Following_Id" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Following_Person" FromRole="Following" ToRole="Person" />
+          <NavigationProperty Name="Person1" Relationship="Self.FK_Following_Person1" FromRole="Following" ToRole="Person" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="User_Id" />
+          </Key>
+          <Property Name="User_Id" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Joined" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Followings" Relationship="Self.FK_Following_Person" FromRole="Person" ToRole="Following" />
+          <NavigationProperty Name="Followings1" Relationship="Self.FK_Following_Person1" FromRole="Person" ToRole="Following" />
+          <NavigationProperty Name="Tweets" Relationship="Self.FK_Tweet_Tweet" FromRole="Person" ToRole="Tweet" />
+        </EntityType>
+        <EntityType Name="Tweet">
+          <Key>
+            <PropertyRef Name="Tweet_Id" />
+          </Key>
+          <Property Name="Tweet_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="User_Id" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Message" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Tweet_Tweet" FromRole="Tweet" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_Following_Person">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Following" Type="Self.Following" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Following">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Following_Person1">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Following" Type="Self.Following" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Following">
+              <PropertyRef Name="Following_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Tweet_Tweet">
+          <End Role="Person" Type="Self.Person" Multiplicity="1" />
+          <End Role="Tweet" Type="Self.Tweet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="User_Id" />
+            </Principal>
+            <Dependent Role="Tweet">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FSEAssignmentEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Followings" EntityType="Self.Following" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="Tweets" EntityType="Self.Tweet" />
+          <AssociationSet Name="FK_Following_Person" Association="Self.FK_Following_Person">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Following" EntitySet="Followings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Following_Person1" Association="Self.FK_Following_Person1">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Following" EntitySet="Followings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tweet_Tweet" Association="Self.FK_Tweet_Tweet">
+            <End Role="Person" EntitySet="People" />
+            <End Role="Tweet" EntitySet="Tweets" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FSEAssignmentModelStoreContainer" CdmEntityContainer="FSEAssignmentEntities">
+          <EntitySetMapping Name="Followings">
+            <EntityTypeMapping TypeName="FSEAssignmentModel.Following">
+              <MappingFragment StoreEntitySet="Following">
+                <ScalarProperty Name="FollowingId" ColumnName="FollowingId" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Following_Id" ColumnName="Following_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="FSEAssignmentModel.Person">
+              <MappingFragment StoreEntitySet="Person">
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Joined" ColumnName="Joined" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tweets">
+            <EntityTypeMapping TypeName="FSEAssignmentModel.Tweet">
+              <MappingFragment StoreEntitySet="Tweet">
+                <ScalarProperty Name="Tweet_Id" ColumnName="Tweet_Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

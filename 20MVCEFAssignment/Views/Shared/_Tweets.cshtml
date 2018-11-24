@@ -1,0 +1,47 @@
+﻿@model _20MVCEFAssignment.Models.TweetModel
+
+<div class="form-group text-left col-md-12" style="padding-left:0px;">
+    @Html.ValidationSummary(false)
+    <h4 for="exampleTextarea  text-left">What are you doing?</h4>
+</div>
+<div class="form-group text-left">
+    @Html.TextAreaFor(a => a.TweetMessage.Message, new { @class = "form-control", id = "exampleTextarea", rows = "3" })
+    @Html.HiddenFor(a => a.TweetMessage.User_Id)
+    @Html.HiddenFor(a => a.TweetMessage.Tweet_Id)
+</div>
+<div class="text-right">
+    <input class="btn btn-default btn-info" type="submit" value="Update" />
+</div>
+<br />
+<div class="form-group">
+    <h4>Tweets</h4>
+    <table class="table">
+        @foreach (var item in Model.lstTweetMessage.OrderByDescending(a => a.Created))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User_Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                @if (item.IsUserTweet)
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "EditTweet", new { tweetId = item.Tweet_Id }) |
+                        @Html.ActionLink("Delete", "DeleteTweet", new { tweetId = item.Tweet_Id })
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+
+            </tr>
+        }
+
+    </table>
+</div>

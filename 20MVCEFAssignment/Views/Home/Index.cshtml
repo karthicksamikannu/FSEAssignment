@@ -1,0 +1,51 @@
+﻿@model _20MVCEFAssignment.Models.TweetModel
+
+@{
+    ViewBag.Title = "Index";
+}
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div>
+                    <div class="col-md-12" style="padding-top:5px;">
+                        <div class="form-group text-left col-md-12" style="padding-left:0px;">
+                            <h4 for="exampleTextarea  text-left">Follow</h4>
+                        </div>
+                        <p><input type="text" id="users" placeholder="seach person" class="search-field form-control" /></p>
+                    </div>
+                </div>
+                <div class="col-md-12 left-side">
+
+                    <div><a class="aClass">@Model.TotalTweets</a>  Tweets</div>
+                    <div><a class="aClass">@Model.TotalFollowing</a>  Following</div>
+                    <div><a class="aClass">@Model.TotalFollowers</a>  Followers</div>
+
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div id="divHome">
+                    @{Html.RenderPartial("_Tweets", Model);}
+                </div>
+            </div>
+        </div>
+    </div>
+                        }
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript">
+        var autoSource = @Html.Raw(Json.Encode(ViewBag.Users));
+        $(document).ready(function () {
+
+            $("#users").autocomplete({
+                source: autoSource
+            });
+        });
+
+    </script>
+}
